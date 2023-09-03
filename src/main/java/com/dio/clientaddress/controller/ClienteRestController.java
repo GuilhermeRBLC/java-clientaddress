@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("clients")
 public class ClienteRestController {
@@ -14,9 +16,10 @@ public class ClienteRestController {
     private ClienteService clienteService;
 
     @GetMapping
-    public ResponseEntity<Iterable<Cliente>> buscarTodos() {
-        return ResponseEntity.ok(clienteService.buscarTodos());
+    public ResponseEntity<Iterable<Cliente>> buscarTodos(@RequestParam("name") Optional<String> nome, @RequestParam("cep") Optional<String> cep) {
+        return ResponseEntity.ok(clienteService.buscarFiltrado(nome, cep));
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Cliente> buscarPorId(@PathVariable Long id) {

@@ -26,7 +26,16 @@ public class ClienteServiceImpl implements ClienteService {
     // Padrão Facade: fornece uma interface simples que abstraia as integrações com os subsistemas.
 
     @Override
-    public Iterable<Cliente> buscarTodos() {
+    public Iterable<Cliente> buscarFiltrado(Optional<String> nome, Optional<String> cep) {
+
+        if(nome.isPresent() && cep.isPresent()) {
+            return clienteRepository.findByNomeAndEnderecoCep(nome.get(), cep.get());
+        } else if(nome.isPresent()) {
+            return clienteRepository.findByNome(nome.get());
+        } else if(cep.isPresent()) {
+            return clienteRepository.findByEnderecoCep(cep.get());
+        }
+
         return clienteRepository.findAll();
     }
 
